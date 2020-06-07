@@ -1,0 +1,22 @@
+h1
+  | スキル一覧
+
+= link_to '新規登録', new_skill_path, class: 'btn btn-primary'
+
+.mb-3.mt-3
+  table.table.table-hover
+    thead.thead-default
+      tr
+        th= Skill.human_attribute_name(:name)
+        th= Skill.human_attribute_name(:kind)
+        th
+    tbody
+      - @skills.each do |skill|
+        tr
+          td = link_to skill.name, skill
+          td = skill.kind_name
+          td 
+            = link_to '編集', edit_skill_path(skill), class: 'btn btn-primary mr-3', data: { disable_with: "遷移中..." }
+            = link_to '削除', skill, method: :delete, data: { confirm: "スキル「#{skill.name}」を削除します。よろしいですか？" }, class: 'btn btn-danger'
+
+

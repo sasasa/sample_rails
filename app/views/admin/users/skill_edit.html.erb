@@ -1,0 +1,48 @@
+<%= form_tag(controller: "users",action: "skill_update", method: "post") do %>
+  <div class="form-group mt-5">
+    <label for="skills">スキル選択:</label>
+    <select name="skills[]" id="skills" class="form-control" multiple size="6">
+    <% @skillhash_by_kind_name.each do |key, skills| %>
+      <optgroup label="<%=key%>">
+      <% skills.each do |skill|%>
+        <option value="<%= skill.id %>" <%=@users_skills.include?(skill) ? "selected" : "" %>>
+          <%= skill.name %>
+        </option>
+      <%end%>
+      </optgroup>
+    <% end %>
+    </select>
+  </div>
+
+  <%= submit_tag "スキル更新", class: 'btn btn-primary' %>
+<% end %>
+
+<div class="check_area">
+<%= form_tag(controller: "users",action: "skill_update", method: "post") do %>
+  <% @skillhash_by_kind_name.each do |key, skills| %>
+  <fieldset class="form-group mt-5">
+    <div class="row">
+      <legend class="col-form-label col-sm-2 pt-0"><%=key%></legend>
+      <div class="col-sm-10">
+        <% skills.each do |skill|%>
+          <div class="form-check">
+            <label class="form-check-label" for="skill_<%=skill.id%>">
+              <input type="checkbox" name="skills[]" id="skill_<%=skill.id%>" value="<%=skill.id%>" <%=@users_skills.include?(skill) ? "checked" : "" %>><%=skill.name%>
+            </label>
+          </div>
+        <%end%>
+      </div>
+    </div>
+  </fieldset>
+  <% end %>
+  <%= submit_tag "スキル更新", class: 'btn btn-primary' %>
+<% end %>
+</div>
+
+
+
+
+
+
+
+

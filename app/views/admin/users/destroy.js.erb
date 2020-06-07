@@ -1,0 +1,5 @@
+document.querySelector('#user-<%= @user.id %>').style.display = 'none';
+
+var message = document.createElement('p');
+message.innerText = 'タスク「<%= @user.name %>」を削除しました。残りのタスクは<%= User.count %>件です。';
+document.querySelector('table').insertAdjacentElement('beforebegin', message);

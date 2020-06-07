@@ -1,0 +1,6 @@
+h1
+  | スキルの新規登録
+.nav.justify-content-end
+  = link_to '一覧', skills_path, class: 'nav-link'
+
+= render partial: 'form', locals: { skill: @skill }

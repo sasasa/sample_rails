@@ -1,0 +1,27 @@
+<%= form_tag(controller: "users",action: "skill_proficiency_update", method: "post") do %>
+  <% @skillsUsers.each do |skillsUser| %>
+  <fieldset class="form-group mt-5">
+    <div class="row">
+      <legend class="col-form-label col-sm-2 pt-0"><%=skillsUser.skill.name%></legend>
+      <div class="col-sm-10">
+        <%= label_tag "proficiency[#{skillsUser.id}]", '習熟度'%>
+        <%= range_field_tag "proficiency[#{skillsUser.id}]", skillsUser.proficiency, in: 1..100, step: 1, class: 'form-control-range', list: "tlist__#{skillsUser.id}"%>
+    　　　<datalist id="tlist__<%=skillsUser.id%>">
+  　　　　　　<option value="1"></option>
+  　　　　　　<option value="10"></option>
+  　　　　　　<option value="20"></option>
+  　　　　　　<option value="30"></option>
+  　　　　　　<option value="40"></option>
+  　　　　　　<option value="50"></option>
+  　　　　　　<option value="60"></option>
+  　　　　　　<option value="70"></option>
+  　　　　　　<option value="80"></option>
+  　　　　　　<option value="90"></option>
+  　　　　　　<option value="100"></option>
+    　　　</datalist>
+      </div>
+    </div>
+  </fieldset>
+  <% end %>
+  <%= submit_tag "スキル更新", class: 'btn btn-primary' %>
+<% end %>

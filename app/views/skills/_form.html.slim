@@ -1,0 +1,13 @@
+- if skill.errors.present?
+  ul#error_explanation
+    - skill.errors.full_messages.each do |message|
+      li= message
+
+= form_for skill do |f|
+  .form-group
+    = f.label :name
+    = f.text_field :name, class: 'form-control'
+  .form-group
+    = f.label :kind
+    = f.select :kind, Skill::KIND_NAMES.invert, {}, class: "form-control"
+  = f.submit nil, class: 'btn btn-primary', data: { disable_with: "送信中..." }

@@ -1,0 +1,47 @@
+h1
+  | タスク一覧
+
+= search_form_for @q, class: 'mb-5' do |f|
+  .form-group.row
+    = f.label :name_cont, '名称(含む)', class: 'col-sm-2 col-form-label'
+    .col-sm-10
+      = f.search_field :name_cont, class: 'form-control'
+  .form-group.row
+    = f.label :created_at_gteq, '登録日時(以上)', class: 'col-sm-2 col-form-label'
+    .col-sm-10
+      = f.search_field :created_at_gteq, class: 'form-control'
+  .form-group.row
+    = f.label :user_email_cont, 'ユーザのメール(含む)', class: 'col-sm-2 col-form-label'
+    .col-sm-10
+      = f.search_field :user_email_cont, class: 'form-control'
+  .form-group
+    = f.submit class: 'btn btn-outline-primary', data: { disable_with: "検索中..." }
+
+=link_to '新規登録', new_task_path, class: 'btn btn-primary mr-3'
+=link_to '有料プラン', plan_tasks_path, class: 'btn btn-primary'
+
+.mb-3
+  = paginate @tasks
+  = page_entries_info @tasks
+
+.mb-3.mt-3
+  table.table.table-hover
+    thead.thead-default
+      tr
+        th= sort_link(@q, :name, default_order: :desc)
+        th= Task.human_attribute_name(:spcial)
+        th= Task.human_attribute_name(:created_at)
+        th
+    tbody
+      - @tasks.each do |task|
+        -if task.special?
+          tr id="task-#{task.id}" class="pink"
+            = render partial: 'td', locals: { task: task }
+        -else
+          tr id="task-#{task.id}"
+            = render partial: 'td', locals: { task: task }
+= link_to 'エクスポート', tasks_path(format: :csv), class: 'btn btn-primary mb-3'
+
+= form_tag import_tasks_path, multipart: true, class: 'mb-3' do
+  = file_field_tag :file
+  = submit_tag "インポート", class: 'btn btn-primary'

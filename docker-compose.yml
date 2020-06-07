@@ -1,0 +1,44 @@
+version: '3'
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: secret
+    volumes:
+      - pgdatavol:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+  chrome:
+    image: selenium/standalone-chrome:3.141.59
+    ports:
+      - 4444:4444
+  backend: &backend
+    build: .
+    tty: true
+    stdin_open: true
+    volumes:
+      - .:/myapp
+      - bundle:/usr/local/bundle
+    depends_on:
+      - db
+      - chrome
+  web:
+    <<: *backend
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    ports:
+      - "3000:3000"
+    environment:
+      RAILS_ENV: development
+      WEBPACKER_DEV_SERVER_HOST: webpack
+    depends_on:
+      - webpack
+  webpack:
+    <<: *backend
+    environment:
+      WEBPACKER_DEV_SERVER_HOST: 0.0.0.0
+    command: bash -c "bin/webpack-dev-server"
+    ports:
+      - 3035:3035
+volumes:
+  pgdatavol:
+  bundle:

@@ -1,0 +1,14 @@
+h1 プレミアムユーザープラン申し込み
+.row.justify-content-center
+  .col-md-8.mt-5
+    -if current_user.subscription
+      p= "【プレミアムユーザー】#{@plan_name}に入っています。"
+      = link_to '一覧へ戻る', tasks_path, class: 'btn btn-primary'
+    -else
+      p プレミアムユーザーになるとタスクを目立たせる機能が使えるようになります。
+      = form_with model:@user, url:check_plan_tasks_path, method: :post do |f|
+        -User::PLANS.each do |key, val|
+          .form-check.mb-2
+            = f.radio_button :plan, key, checked: true, id: "plan_#{key}", class: "form-check-input"
+            = f.label :plan, "#{val}プラン", for: "plan_#{key}", class: "form-check-label"
+        script src="https://checkout.pay.jp/" class="payjp-button" type="text/javascript" data-key="#{ENV.fetch('PAYJP_KEY')}"

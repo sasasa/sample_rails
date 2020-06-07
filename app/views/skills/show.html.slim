@@ -1,0 +1,25 @@
+h1 スキルの詳細
+
+.nav.justify-content-end
+  = link_to '一覧', skills_path, class: 'nav-link'
+
+table.table.table-hover
+  tbody
+    tr
+      th= Skill.human_attribute_name(:id)
+      td= @skill.id
+    tr
+      th= Skill.human_attribute_name(:name)
+      td= @skill.name
+    tr
+      th= Skill.human_attribute_name(:kind)
+      td= @skill.kind_name
+    tr
+      th= Skill.human_attribute_name(:created_at)
+      td= @skill.created_at
+    tr
+      th= Skill.human_attribute_name(:updated_at)
+      td= @skill.updated_at
+
+= link_to '編集', edit_skill_path(@skill), class: 'btn btn-primary mr-3'
+= link_to '削除', @skill, method: :delete, data: { confirm: "スキル「#{@skill.name}」を削除します。よろしいですか？" }, class: 'btn btn-danger'

@@ -1,0 +1,22 @@
+- if task.errors.present?
+  ul#error_explanation
+    - task.errors.full_messages.each do |message|
+      li= message
+
+= form_with model: task, local: true, url: url do |f|
+  .form-group
+    = f.label :name
+    = f.text_field :name, class: 'form-control', id: 'task_name'
+  .form-group
+    = f.label :description
+    = f.text_area :description, rows: 5, class: 'form-control', id: 'task_description'
+  .form-group
+    = f.label :image
+    = f.file_field :image, class: 'form-control'
+  -if current_user.premium?
+    .form-check
+      = f.label :special, class: 'form-check-label' do
+        = f.check_box :special, class: 'form-check-input'
+        | 目立たせる
+
+  = f.submit nil, class: 'btn btn-primary', data: { disable_with: "送信中..." }
