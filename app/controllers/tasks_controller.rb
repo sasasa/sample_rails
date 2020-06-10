@@ -22,6 +22,7 @@ class TasksController < ApplicationController
 
   def plan
     @user = current_user
+    @card = Card.new
     if @user.subscription
       subscription = Payjp::Subscription.retrieve(@user.subscription)
       @plan_name = subscription[:plan][:name]
@@ -30,6 +31,14 @@ class TasksController < ApplicationController
 
   def check_plan
     @user = current_user
+
+    # card_params = params.require(:card).permit(:number, :month, :year, :cvc, :name, :plan)
+    # @card = Card.new(card_params)
+    # if @card.save(current_user, params["payjp-token"])
+    #   return redirect_to tasks_url, notice: "【プレミアムユーザー】#{User::PLANS[plan]}プランに申し込みました。"
+    # else
+    #   return render :plan
+    # end
 
     plan = params.require(:user).permit(:plan)[:plan]
 

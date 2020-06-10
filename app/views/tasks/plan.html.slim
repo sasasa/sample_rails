@@ -5,10 +5,44 @@ h1 プレミアムユーザープラン申し込み
       p= "【プレミアムユーザー】#{@plan_name}に入っています。"
       = link_to '一覧へ戻る', tasks_path, class: 'btn btn-primary'
     -else
-      p プレミアムユーザーになるとタスクを目立たせる機能が使えるようになります。
+      p プレミアムユーザーになるとタスクを目立たせる機能が使えるようになります。カード番号4242 4242 4242 4242を入力するとお試しで登録できます。
       = form_with model:@user, url:check_plan_tasks_path, method: :post do |f|
         -User::PLANS.each do |key, val|
           .form-check.mb-2
             = f.radio_button :plan, key, checked: true, id: "plan_#{key}", class: "form-check-input"
             = f.label :plan, "#{val}プラン", for: "plan_#{key}", class: "form-check-label"
         script src="https://checkout.pay.jp/" class="payjp-button" type="text/javascript" data-key="#{ENV.fetch('PAYJP_KEY')}"
+
+
+/ .row.justify-content-center
+/   .col-md-8
+/     - if @card.errors.present?
+/       ul#error_explanation
+/       - @card.errors.full_messages.each do |message|
+/         li= message
+/     = form_with model:@card, local: true, url:check_plan_tasks_path, method: :post, class: "form" do |f|
+/       .form-row
+/         .form-group.col-sm-12
+/           = f.label :number
+/           = f.text_field :number, class: 'form-control', placeholder: '4242424242424242', inputmode: "numeric"
+/       .form-row
+/         .form-group.col-sm-3
+/           = f.label :month
+/           = f.text_field :month, class: 'form-control', placeholder: '12', inputmode: "numeric"
+/         .form-group.col-sm-3
+/           = f.label :year
+/           = f.text_field :year, class: 'form-control', placeholder: '2020', inputmode: "numeric"
+/         .form-group.col-sm-6.row
+/           = f.label :cvc, class: "ml-3 "
+/           = link_to asset_url('creditcards/type_01.png'), target: "_blank", class: "col-sm-2"
+/             i.fa.fa-question-circle"
+/           = f.text_field :cvc, class: 'form-control ml-3', placeholder: '***', inputmode: "numeric"
+/       .form-row
+/         .form-group.col-sm-12
+/           = f.label :name
+/           = f.text_field :name, class: 'form-control', placeholder: 'SATSHI NAKAMOTO'
+/       -Card::PLANS.each do |key, val|
+/         .form-check.mb-2
+/           = f.radio_button :plan, key, checked: true, id: "plan_#{key}", class: "form-check-input"
+/           = f.label :plan, "#{val}プラン", for: "plan_#{key}", class: "form-check-label"
+/       = f.submit "プランを申し込む", class: 'btn btn-primary mt-3', data: { disable_with: "送信中..." }
